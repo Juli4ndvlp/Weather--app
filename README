@@ -1,0 +1,40 @@
+# ☁️ Weather App™
+
+¡Bienvenido a **Weather App™**! Una aplicación web moderna, minimalista y con estética *Glassmorphism* que permite consultar el clima de cualquier ciudad del mundo en tiempo real. Además de los datos meteorológicos estándar, la aplicación integra de forma dinámica cámaras en vivo (webcams) cercanas al lugar consultado mediante mapas interactivos y timelapses.
+
+La aplicación está diseñada bajo el principio de **privacidad por diseño**, ofreciendo al usuario control total sobre el almacenamiento de sus datos locales y optimizando el consumo de APIs mediante un sistema inteligente de caché.
+
+---
+
+## 🚀 Características Principales
+
+* **Búsqueda Global con Autocompletado:** Geocodificación precisa de ciudades en español utilizando coordenadas geográficas nativas.
+* **Cámaras en Vivo (Webcams):** Integración con la API v3 de Windy para buscar y reproducir automáticamente timelapses diarios (`autoplay` & `mute` activados) de estaciones meteorológicas en un radio de 50 km.
+* **Sistema de Caché Inteligente (TTL):** Los datos del clima se almacenan localmente en el dispositivo por un máximo de 10 minutos para evitar llamadas redundantes a las APIs y mejorar los tiempos de carga.
+* **Modo Offline (Sin Conexión):** Si el usuario pierde el acceso a internet, la app detecta el estado dinámicamente y despliega un banner de advertencia, permitiendo consultar las búsquedas recientes utilizando la caché local (incluso si está vencida como método de *fallback*).
+* **Panel de Privacidad y Consentimiento:** Banner de cookies/almacenamiento nativo. No se envía ningún dato a servidores externos; todo se gestiona en el `localStorage` del cliente.
+* **Diseño Fluido y Adaptable:** Interfaz moderna con fondos brillantes (*glows animados*), tipografía Outfit y total adaptabilidad a dispositivos móviles.
+
+---
+
+## 🛠️ Tecnologías Utilizadas
+
+El proyecto fue construido utilizando tecnologías web estándar, sin frameworks pesados, garantizando un rendimiento óptimo y una carga ultra rápida:
+
+* **HTML5:** Estructura semántica y accesibilidad.
+* **CSS3:** Estilos avanzados, variables nativas, animaciones fluidas y diseño de vidrio esmerilado (*Glassmorphism*).
+* **JavaScript (Vanilla ES6+):** Lógica asíncrona (`Async/Await`), manejo del DOM, control de flujo con `AbortController` (timeouts de red) y persistencia de datos.
+* **APIs Externas:**
+    * [Open-Meteo Geocoding API](https://open-meteo.com/) (Conversión de Ciudad ➡️ Coordenadas).
+    * [Open-Meteo Weather Forecast API](https://open-meteo.com/) (Datos meteorológicos actuales y humedad).
+    * [Windy.com Webcam API v3](https://api.windy.com/) (Orquestación de reproductores de vídeo en vivo).
+
+---
+
+## 📦 Estructura del Proyecto
+
+```text
+├── index.html        # Estructura principal y banners de UI
+├── style.css         # Sistema de diseño, variables CSS y animaciones
+├── script.js        # Orquestador de APIs, Estado de caché y Eventos
+└── README.md         # Documentación del proyecto
