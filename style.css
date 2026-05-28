@@ -1,0 +1,338 @@
+/* ═══════════════════════════════════════════════════════════
+   Weather App — style.css
+   Glassy Minimalist Design System + Webcam Section
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Reset ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-primary:          #070b14;
+  --glass-bg:            rgba(15, 23, 42, 0.45);
+  --glass-card:          rgba(255, 255, 255, 0.03);
+  --glass-border:        rgba(255, 255, 255, 0.08);
+  --glass-border-focus:  rgba(99, 102, 241, 0.5);
+  --glass-hover:         rgba(255, 255, 255, 0.08);
+
+  --text-main:    #f8fafc;
+  --text-muted:   #94a3b8;
+  --text-inverse: #0f172a;
+
+  --primary-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+
+  --danger-bg:     rgba(239, 68, 68, 0.12);
+  --danger-border: rgba(239, 68, 68, 0.25);
+  --danger-text:   #f87171;
+
+  --live-bg:     rgba(52, 211, 153, 0.12);
+  --live-border: rgba(52, 211, 153, 0.25);
+  --live-text:   #34d399;
+
+  --cache-bg:     rgba(251, 191, 36, 0.12);
+  --cache-border: rgba(251, 191, 36, 0.25);
+  --cache-text:   #fbbf24;
+
+  --cam-bg:     rgba(6, 182, 212, 0.08);
+  --cam-border: rgba(6, 182, 212, 0.2);
+  --cam-text:   #22d3ee;
+
+  --font-main:       'Outfit', system-ui, -apple-system, sans-serif;
+  --weight-light:    300;
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+}
+
+/* ── Base & Background ── */
+body {
+  font-family:       var(--font-main);
+  background-color:  var(--bg-primary);
+  background-image:  radial-gradient(circle at 50% 0%, #111a36 0%, #070a14 100%);
+  color:             var(--text-main);
+  min-height:        100vh;
+  display:           flex;
+  justify-content:   center;
+  align-items:       flex-start;
+  padding:           4rem 1.5rem;
+  overflow-x:        hidden;
+  position:          relative;
+  -webkit-font-smoothing: antialiased;
+}
+
+.bg-glow {
+  position:      fixed;
+  width:         45vw;
+  height:        45vw;
+  border-radius: 50%;
+  filter:        blur(120px);
+  opacity:       0.12;
+  pointer-events: none;
+  z-index:       -1;
+  animation:     glowFloat 12s ease-in-out infinite alternate;
+}
+.bg-glow-1 { top: -10%; left: -5%; background: radial-gradient(circle, #6366f1, #d946ef); }
+.bg-glow-2 { bottom: -10%; right: -5%; background: radial-gradient(circle, #06b6d4, #3b82f6); animation-delay: -6s; }
+
+/* ── Consent Banner ── */
+.consent-banner {
+  position:         fixed;
+  bottom:           24px;
+  left:             50%;
+  transform:        translateX(-50%);
+  width:            calc(100% - 32px);
+  max-width:        460px;
+  background:       rgba(15, 23, 42, 0.7);
+  border:           1px solid var(--glass-border);
+  backdrop-filter:  blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding:          1.5rem;
+  border-radius:    16px;
+  box-shadow:       0 15px 35px rgba(0, 0, 0, 0.4);
+  z-index:          1000;
+  animation:        slideUpFade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.consent-banner p       { font-size: 13.5px; line-height: 1.5; color: var(--text-muted); margin-bottom: 1.25rem; }
+.consent-banner p strong { color: var(--text-main); font-weight: var(--weight-medium); }
+.consent-banner a        { color: var(--text-main); text-decoration: underline; text-underline-offset: 2px; }
+.consent-actions         { display: flex; gap: 10px; }
+.consent-actions button  { flex: 1; height: 38px; border-radius: 10px; font-family: var(--font-main); font-size: 13.5px; font-weight: var(--weight-semibold); cursor: pointer; transition: all 0.2s ease; }
+#consent-accept          { background: var(--text-main); color: var(--text-inverse); border: none; }
+#consent-accept:hover    { background: #cbd5e1; }
+#consent-reject          { background: transparent; color: var(--text-muted); border: 1px solid rgba(255,255,255,0.15); }
+#consent-reject:hover    { background: var(--glass-hover); color: var(--text-main); }
+
+/* ── App Container ── */
+.app {
+  width:           100%;
+  max-width:       460px;
+  background:      var(--glass-bg);
+  border:          1px solid var(--glass-border);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius:   20px;
+  padding:         2.5rem 2.25rem;
+  box-shadow:      0 15px 40px rgba(0, 0, 0, 0.3);
+  animation:       appEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.app-title {
+  font-size:       24px;
+  font-weight:     var(--weight-light);
+  margin-bottom:   2rem;
+  text-align:      center;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  gap:             8px;
+  letter-spacing:  -0.5px;
+  color:           var(--text-main);
+}
+.app-title span { font-size: 26px; animation: floatCloud 5s ease-in-out infinite alternate; }
+
+/* ── Offline Banner ── */
+.offline-banner {
+  display:       none;
+  background:    var(--danger-bg);
+  color:         var(--danger-text);
+  border:        1px solid var(--danger-border);
+  border-radius: 10px;
+  padding:       12px 14px;
+  font-size:     13px;
+  font-weight:   var(--weight-medium);
+  margin-bottom: 1.5rem;
+  text-align:    center;
+}
+
+/* ── Search Row ── */
+.search-row { display: flex; gap: 8px; margin-bottom: 1rem; }
+.search-row input {
+  flex:          1;
+  height:        44px;
+  padding:       0 14px;
+  background:    rgba(15, 23, 42, 0.55);
+  border:        1px solid var(--glass-border);
+  border-radius: 10px;
+  font-family:   var(--font-main);
+  font-size:     14.5px;
+  color:         var(--text-main);
+  outline:       none;
+  transition:    all 0.25s ease;
+}
+.search-row input::placeholder { color: #64748b; }
+.search-row input:focus        { border-color: var(--glass-border-focus); box-shadow: 0 0 10px rgba(99,102,241,0.15); background: rgba(15,23,42,0.7); }
+.search-row button {
+  height:        44px;
+  padding:       0 22px;
+  border:        none;
+  border-radius: 10px;
+  font-family:   var(--font-main);
+  font-size:     14.5px;
+  font-weight:   var(--weight-medium);
+  background:    var(--primary-gradient);
+  color:         #ffffff;
+  cursor:        pointer;
+  box-shadow:    0 4px 12px rgba(99,102,241,0.2);
+  transition:    all 0.2s ease;
+}
+.search-row button:hover    { transform: translateY(-1px); box-shadow: 0 6px 15px rgba(99,102,241,0.3); }
+.search-row button:active   { transform: translateY(1px); }
+.search-row button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+/* ── Status Bar ── */
+.status-bar { font-size: 13px; color: var(--text-muted); min-height: 20px; margin-bottom: 1rem; padding-left: 2px; }
+
+/* ── Badges ── */
+.cache-badge    { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: var(--weight-medium); padding: 4px 10px; border-radius: 99px; margin-bottom: 1.25rem; letter-spacing: 0.2px; }
+.badge-live     { background: var(--live-bg);    color: var(--live-text);    border: 1px solid var(--live-border);    }
+.badge-cached   { background: var(--cache-bg);   color: var(--cache-text);   border: 1px solid var(--cache-border);   }
+.badge-offline  { background: var(--danger-bg);  color: var(--danger-text);  border: 1px solid var(--danger-border);  }
+.dot            { width: 5px; height: 5px; border-radius: 50%; display: inline-block; }
+.dot-live       { background: var(--live-text);    animation: pulseOpacity 1.5s infinite; }
+.dot-cached     { background: var(--cache-text);   }
+.dot-offline    { background: var(--danger-text);  }
+
+/* ── Weather Card ── */
+.weather-card { background: var(--glass-card); border: 1px solid var(--glass-border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; animation: cardFadeIn 0.4s ease forwards; }
+.weather-card .card-header   { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.weather-card .weather-icon  { font-size: 32px; animation: floatIcon 4s ease-in-out infinite alternate; display: inline-block; }
+.weather-card .city-name     { font-size: 20px; font-weight: var(--weight-medium); letter-spacing: -0.2px; }
+.weather-card .weather-desc  { font-size: 14px; color: var(--text-muted); margin-bottom: 1.5rem; padding-left: 2px; }
+.metrics { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--glass-border); padding-top: 1.25rem; }
+.metric  { text-align: center; position: relative; }
+.metric:not(:last-child)::after { content: ""; position: absolute; right: 0; top: 15%; height: 70%; width: 1px; background-color: var(--glass-border); }
+.metric .val { font-size: 19px; font-weight: var(--weight-medium); }
+.metric .lbl { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+/* ── Section Titles ── */
+.section-title {
+  font-size:      11.5px;
+  font-weight:    var(--weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color:          var(--text-muted);
+  margin-bottom:  10px;
+}
+
+/* ══════════════════════════════════════════════════════
+   SECCIÓN DE WEBCAM — Windy
+   ══════════════════════════════════════════════════════ */
+
+.cam-section {
+  margin-top:    2rem;
+  border-top:    1px solid var(--glass-border);
+  padding-top:   1.5rem;
+  animation:     cardFadeIn 0.4s ease forwards;
+}
+
+/* Fila del título + badge "por Windy.com" */
+.cam-title-row {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  margin-bottom:   10px;
+}
+
+.cam-powered {
+  font-size:    11px;
+  color:        var(--cam-text);
+  font-weight:  var(--weight-regular);
+  background:   var(--cam-bg);
+  border:       1px solid var(--cam-border);
+  padding:      2px 8px;
+  border-radius: 99px;
+  letter-spacing: 0.2px;
+}
+
+/* Metadatos de la cámara: nombre + link */
+.cam-meta {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  margin-bottom:   8px;
+}
+
+.cam-title {
+  font-size:   13px;
+  color:       var(--text-muted);
+  font-weight: var(--weight-regular);
+  white-space: nowrap;
+  overflow:    hidden;
+  text-overflow: ellipsis;
+  max-width:   70%;
+}
+
+.cam-link {
+  font-size:         11.5px;
+  color:             var(--cam-text);
+  text-decoration:   none;
+  font-weight:       var(--weight-medium);
+  transition:        opacity 0.15s;
+  white-space:       nowrap;
+}
+.cam-link:hover { opacity: 0.75; }
+
+/* Iframe de la cámara */
+.cam-iframe {
+  width:         100%;
+  aspect-ratio:  16 / 9;
+  border:        none;
+  border-radius: 12px;
+  background:    var(--glass-card);
+  display:       block;
+}
+
+/* Estado: buscando cámara */
+.cam-loading {
+  font-size:  13px;
+  color:      var(--text-muted);
+  padding:    1rem 0;
+  text-align: center;
+  animation:  pulseOpacity 1.5s infinite;
+}
+
+/* Estado: sin cámara disponible */
+.cam-empty {
+  font-size:  13px;
+  color:      var(--text-muted);
+  padding:    1rem 0;
+  text-align: center;
+  background: var(--glass-card);
+  border:     1px solid var(--glass-border);
+  border-radius: 10px;
+}
+
+/* ── History ── */
+.history-section { margin-top: 2rem; border-top: 1px solid var(--glass-border); padding-top: 1.5rem; }
+.history-list    { display: flex; flex-wrap: wrap; gap: 6px; }
+.history-chip    { font-size: 13px; padding: 5px 14px; background: var(--glass-card); border: 1px solid var(--glass-border); border-radius: 99px; cursor: pointer; color: var(--text-main); transition: all 0.2s ease; }
+.history-chip:hover { background: var(--glass-hover); border-color: rgba(99,102,241,0.4); transform: translateY(-1px); }
+
+/* ── Cache Panel ── */
+.cache-section   { margin-top: 2rem; border-top: 1px solid var(--glass-border); padding-top: 1.5rem; }
+.cache-title-row { display: flex; justify-content: space-between; align-items: center; }
+.clear-btn       { font-size: 11.5px; font-weight: var(--weight-semibold); color: var(--text-muted); background: none; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: color 0.15s ease; }
+.clear-btn:hover { color: var(--danger-text); }
+.cache-entry               { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--glass-border); font-size: 13px; }
+.cache-entry:last-child    { border-bottom: none; }
+.cache-entry .city-col     { font-weight: var(--weight-medium); }
+.cache-entry .age-col      { color: var(--text-muted); font-size: 12px; }
+
+/* ── Animations ── */
+@keyframes glowFloat   { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(20px) scale(1.05); } }
+@keyframes slideUpFade { from { opacity: 0; transform: translate(-50%, 15px); } to { opacity: 1; transform: translate(-50%, 0); } }
+@keyframes appEntrance { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes cardFadeIn  { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes floatCloud  { 0% { transform: translateY(0); } 100% { transform: translateY(-3px); } }
+@keyframes floatIcon   { 0% { transform: translateY(0) scale(1); } 100% { transform: translateY(-2px) scale(1.03); } }
+@keyframes pulseOpacity { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+/* ── Responsive ── */
+@media (max-width: 480px) {
+  body { padding: 2rem 1rem; }
+  .app { padding: 2rem 1.5rem; }
+  .cam-title { max-width: 55%; }
+}

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+
+    <!-- Glows de fondo -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <!-- Banner de consentimiento -->
+    <div id="consent-banner" class="consent-banner" style="display: none">
+      <p>
+        Esta app guarda en tu dispositivo el
+        <strong>historial de ciudades buscadas</strong> y los datos del clima
+        en caché (máx. 10 min). No se envía ningún dato a servidores propios.
+        Datos meteorológicos provistos por
+        <a href="https://open-meteo.com" target="_blank" rel="noopener">Open-Meteo</a>
+        (CC BY 4.0). Cámaras en vivo por
+        <a href="https://windy.com" target="_blank" rel="noopener">Windy.com</a>.
+      </p>
+      <div class="consent-actions">
+        <button id="consent-accept">Aceptar</button>
+        <button id="consent-reject" class="btn-secondary">Rechazar</button>
+      </div>
+    </div>
+
+    <div class="app">
+      <h1 class="app-title"><span>&#9729;</span> Weather App™</h1>
+
+      <!-- Banner sin conexión -->
+      <div id="offline-banner" class="offline-banner">
+        &#9888; Sin conexión — mostrando datos guardados en caché
+      </div>
+
+      <!-- Búsqueda -->
+      <div class="search-row">
+        <input
+          type="text"
+          id="city-input"
+          placeholder="Ciudad, p.ej. Bogotá"
+          autocomplete="off"
+        />
+        <button id="search-btn">Buscar</button>
+      </div>
+
+      <div id="status" class="status-bar"></div>
+
+      <!-- Resultado del clima -->
+      <div id="result"></div>
+
+      <!-- ── Sección de cámara en vivo (Windy) ── -->
+      <div class="cam-section" id="cam-section" style="display: none">
+        <div class="section-title cam-title-row">
+          <span>Cámara en vivo</span>
+          <span class="cam-powered">por Windy.com</span>
+        </div>
+        <div id="cam-container"></div>
+      </div>
+
+      <!-- Historial de búsquedas -->
+      <div class="history-section" id="history-section" style="display: none">
+        <div class="section-title">Búsquedas recientes</div>
+        <div class="history-list" id="history-list"></div>
+      </div>
+
+      <!-- Panel de caché -->
+      <div class="cache-section" id="cache-section" style="display: none">
+        <div class="section-title cache-title-row">
+          <span>Caché local</span>
+          <button class="clear-btn" id="clear-btn">Limpiar todo</button>
+        </div>
+        <div id="cache-entries"></div>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
